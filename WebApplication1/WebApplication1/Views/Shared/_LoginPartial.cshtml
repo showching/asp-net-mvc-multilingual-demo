@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNet.Identity
+@using WebApplication1.Models
+@using WebApplication1.Helpers
+
+@{
+    List<Language> languages = new LanguageHelper().GetLanguages();
+
+    object lang = ViewContext.RouteData.Values["lang"];
+    string currentLang = "en";
+    if (lang != null)
+    {
+        currentLang = lang.ToString();
+    }
+    currentLang = languages.Find(x => x.Code == currentLang).Name;
+}
+
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <div class="dropdown">
+                <button class="dropbtn">@currentLang</button>
+                <div class="dropdown-content">
+                    @foreach (var item in languages)
+                    {
+                        RouteValueDictionary dict = new RouteValueDictionary();
+                        dict.Add("lang", item.Code);
+                        if (Request.QueryString.Count > 0)
+                        {
+                            foreach (string key in Request.QueryString)
+                            {
+                                dict.Add(key, Request.QueryString[key]);
+                            }
+                        }
+                        @Html.ActionLink(item.Name, ViewContext.RouteData.Values["action"].ToString(), dict)
+                    }
+                </div>
+            </div>
+        </li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
