@@ -15,8 +15,8 @@ namespace WebApplication1
 
             routes.MapRoute(
                 name: "DefaultLocalized",
-                url: "{lang}/{controller}/{action}/{id}",
-                constraints: new { lang = @"(\w{2})|(\w{2}-\w{2})" },   // en or en-US
+                url: "{culture}/{controller}/{action}/{id}",
+                constraints: new { culture = @"(\w{2})|(\w{2}-\w{2})" },   // en or en-US
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 

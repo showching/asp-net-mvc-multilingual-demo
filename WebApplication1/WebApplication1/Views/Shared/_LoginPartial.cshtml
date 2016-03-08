@@ -5,13 +5,8 @@
 @{
     List<Language> languages = new LanguageHelper().GetLanguages();
 
-    object lang = ViewContext.RouteData.Values["lang"];
-    string currentLang = "en";
-    if (lang != null)
-    {
-        currentLang = lang.ToString();
-    }
-    currentLang = languages.Find(x => x.Code == currentLang).Name;
+    string currentCulture = System.Globalization.CultureInfo.CurrentCulture.ToString();
+    string currentLang = languages.Find(x => x.Code == currentCulture).Name;
 }
 
 
@@ -39,7 +34,7 @@ else
                     @foreach (var item in languages)
                     {
                         RouteValueDictionary dict = new RouteValueDictionary();
-                        dict.Add("lang", item.Code);
+                        dict.Add("culture", item.Code);
                         if (Request.QueryString.Count > 0)
                         {
                             foreach (string key in Request.QueryString)
