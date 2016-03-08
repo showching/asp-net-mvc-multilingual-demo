@@ -12,8 +12,8 @@ namespace WebApplication1.Helpers
         {
             List<Language> languages = new List<Language>
             {
-                new Language{ID=1,Name="English",Code="en"},
-                new Language{ID=2,Name="Chinese",Code="zh"}
+                new Language{ID=1,Name="English",Code="en-US"},
+                new Language{ID=2,Name="Chinese",Code="zh-CN"}
             };
 
             return languages;
